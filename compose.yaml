@@ -1,0 +1,26 @@
+
+services:
+  db:
+    image: postgres:17
+    container_name: metering_db
+    restart: always
+
+    environment:
+      POSTGRES_DB: metering_db
+      POSTGRES_USER: metering_user
+      POSTGRES_PASSWORD: dev_password_123
+
+    ports:
+      - "5434:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U metering_user -d metering_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
